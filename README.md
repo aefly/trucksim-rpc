@@ -68,12 +68,12 @@ time.
     <td align="center">
       <img src="./.img/preview/ets2/preview-3.png" alt="Preview 3" width="300" />
       <br/>
-      <em>Truck information</em>
+      <em>Job route with ETA</em>
     </td>
     <td align="center">
       <img src="./.img/preview/ets2/preview-4.png" alt="Preview 4" width="300" />
       <br/>
-      <em>Job route with ETA</em>
+      <em>Truck information</em>
     </td>
     <td align="center">
       <img src="./.img/preview/ets2/preview-5.png" alt="Preview 5" width="300" />
@@ -100,12 +100,12 @@ time.
     <td align="center">
       <img src="./.img/preview/ats/preview-3.png" alt="Preview 3" width="300" />
       <br/>
-      <em>Truck information</em>
+      <em>Job route with ETA</em>
     </td>
     <td align="center">
       <img src="./.img/preview/ats/preview-4.png" alt="Preview 4" width="300" />
       <br/>
-      <em>Job route with ETA</em>
+      <em>Truck information</em>
     </td>
     <td align="center">
       <img src="./.img/preview/ats/preview-5.png" alt="Preview 5" width="300" />
