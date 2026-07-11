@@ -51,19 +51,68 @@ time.
 
 ## Preview
 
+### ETS2
+
 <table>
   <tr>
     <td align="center">
-      <img src="./.img/preview-1.png" alt="Preview 1" width="300" />
+      <img src="./.img/preview/ets2/preview-1.png" alt="Preview 1" width="300" />
       <br/>
       <em>Free roam with player status</em>
     </td>
     <td align="center">
-      <img src="./.img/preview-2.png" alt="Preview 2" width="300" />
+      <img src="./.img/preview/ets2/preview-2.png" alt="Preview 2" width="300" />
       <br/>
-      <em>Job route with truck info and ETA</em>
+      <em>Job route with remaining distance</em>
     </td>
   </tr>
+  <td align="center">
+    <img src="./.img/preview/ets2/preview-3.png" alt="Preview 3" width="300" />
+    <br/>
+    <em>Truck information</em>
+  </td>
+  <td align="center">
+    <img src="./.img/preview/ets2/preview-4.png" alt="Preview 4" width="300" />
+    <br/>
+    <em>Job route with ETA</em>
+  </td>
+  <td align="center">
+    <img src="./.img/preview/ets2/preview-5.png" alt="Preview 5" width="300" />
+    <br/>
+    <em>Convoy status</em>
+  </td>
+</table>
+
+### ATS
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="./.img/preview/ats/preview-1.png" alt="Preview 1" width="300" />
+      <br/>
+      <em>Free roam with player status</em>
+    </td>
+    <td align="center">
+      <img src="./.img/preview/ats/preview-2.png" alt="Preview 2" width="300" />
+      <br/>
+      <em>Job route with remaining distance</em>
+    </td>
+  </tr>
+  <td align="center">
+    <img src="./.img/preview/ats/preview-3.png" alt="Preview 3" width="300" />
+    <br/>
+    <em>Truck information</em>
+  </td>
+  <td align="center">
+    <img src="./.img/preview/ats/preview-4.png" alt="Preview 4" width="300" />
+    <br/>
+    <em>Job route with ETA</em>
+  </td>
+  <td align="center">
+    <img src="./.img/preview/ats/preview-5.png" alt="Preview 5" width="300" />
+    <br/>
+    <em>Convoy status</em>
+  </td>
 </table>
 
 ## Installation
