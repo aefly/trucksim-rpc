@@ -1,0 +1,20 @@
+name: Bug Report
+description: Report a bug
+labels: [bug]
+body:
+    - type: textarea
+      attributes:
+          label: Description
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Game + Plugin Version
+          placeholder: ETS2 1.60, trucksim-rpc 0.0.1
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Game Log
+          description: game.log.txt file
+          render: text

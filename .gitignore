@@ -1,0 +1,6 @@
+build/
+*.o
+compile_commands.json
+.cache/
+AGENTS.md
+.env

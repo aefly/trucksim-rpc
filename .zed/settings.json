@@ -1,0 +1,12 @@
+{
+    "lsp": {
+        // markdownlint: https://github.com/DavidAnson/markdownlint/tree/main/doc
+        "markdownlint": {
+            "settings": {
+                "MD041": false,
+                "MD033": false,
+                "MD059": false
+            }
+        }
+    }
+}

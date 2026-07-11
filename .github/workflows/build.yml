@@ -1,0 +1,113 @@
+name: Build & Release
+
+on:
+    push:
+        branches: ["*"]
+        tags: ["v*"]
+    pull_request:
+        branches: ["*"]
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v7
+
+            - name: Install MinGW-w64 cross-compiler
+              run: sudo apt-get update && sudo apt-get install -y mingw-w64
+
+            - name: Build DLL
+              shell: bash
+              run: |
+                  set -e
+                  trap 'echo "Build failed at $(date)."; exit 1' ERR
+                  start_time=$(date +%s)
+                  if [[ "${{ github.ref }}" =~ ^refs/tags/v ]]; then
+                    tag="${GITHUB_REF#refs/tags/v}"
+                    numeric=$(echo "$tag" | sed 's/[^0-9.].*//')
+                    IFS='.' read -ra parts <<< "$numeric"
+                    while [ ${#parts[@]} -lt 4 ]; do parts+=(0); done
+                    filever=$(IFS=,; echo "${parts[*]}")
+                    sed -i "s/FILEVERSION\s\+.*/FILEVERSION     $filever/" trucksim-rpc.rc
+                    sed -i "s/PRODUCTVERSION\s\+.*/PRODUCTVERSION  $filever/" trucksim-rpc.rc
+                    sed -i "s/VALUE \"FileVersion\",\s\+.*/VALUE \"FileVersion\",      \"$tag\"/" trucksim-rpc.rc
+                    sed -i "s/VALUE \"ProductVersion\",\s\+.*/VALUE \"ProductVersion\",   \"$tag\"/" trucksim-rpc.rc
+                  fi
+                  mkdir -p build/bin/win_x64/plugins
+                  x86_64-w64-mingw32-windres trucksim-rpc.rc -O coff -o build/trucksim-rpc_res.o
+                  cp src/sdk/discord/lib/x86_64/discord_game_sdk.dll build/bin/win_x64/
+                  DISCORD_SOURCES=$(ls src/sdk/discord/cpp/*.cpp)
+                  x86_64-w64-mingw32-g++ -shared -m64 -O2 -std=c++23 -o build/bin/win_x64/plugins/trucksim-rpc.dll \
+                      -DDISCORD_APP_ID=${{ secrets.APP_ID }} \
+                      build/trucksim-rpc_res.o \
+                      src/log/log.cpp \
+                      src/telemetry/telemetry.cpp \
+                      src/discord/discord_client.cpp \
+                      src/presence/presence.cpp \
+                      src/core/plugin.cpp \
+                      $DISCORD_SOURCES \
+                      trucksim-rpc.def \
+                      -include src/sdk/discord/compat/preinclude.h \
+                      -I src/sdk/scs/include \
+                      -I src/sdk/discord/cpp \
+                      -I src/sdk/discord/compat \
+                      -I src/telemetry \
+                      -I src/discord \
+                      -I src/presence \
+                      -I src/config \
+                      -I src/log \
+                      -I src/core \
+                      src/sdk/discord/lib/x86_64/discord_game_sdk.dll.lib \
+                      -static-libgcc -static-libstdc++ \
+                      -Wl,--kill-at
+                  rm -f build/trucksim-rpc_res.o
+                  end_time=$(date +%s)
+                  elapsed=$((end_time - start_time))
+                  echo "Build successful (${elapsed}s):"
+                  echo "  - build/bin/win_x64/plugins/trucksim-rpc.dll"
+                  echo "  - build/bin/win_x64/discord_game_sdk.dll"
+
+            - name: Upload DLL artifact
+              uses: actions/upload-artifact@v7
+              with:
+                  name: trucksim-rpc-dll
+                  path: build/
+
+    release:
+        if: startsWith(github.ref, 'refs/tags/v')
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v7
+
+            - name: Download DLLs
+              uses: actions/download-artifact@v8
+              with:
+                  name: trucksim-rpc-dll
+
+            - name: Package zip
+              run: |
+                  version="${GITHUB_REF#refs/tags/v}"
+                  dir="trucksim-rpc-$version"
+                  mkdir -p "$dir/bin/win_x64/plugins"
+                  cp bin/win_x64/discord_game_sdk.dll "$dir/bin/win_x64/"
+                  cp "bin/win_x64/plugins/trucksim-rpc.dll" "$dir/bin/win_x64/plugins/"
+                  zip -r "trucksim-rpc-$version.zip" "$dir"
+
+            - name: Create GitHub Release
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  version="${GITHUB_REF#refs/tags/v}"
+                  flags=""
+                  if [[ "$version" == *-* ]]; then flags="--prerelease"; fi
+                  gh release create "v$version" "trucksim-rpc-$version.zip" \
+                    --title "v$version" \
+                    --generate-notes \
+                    $flags

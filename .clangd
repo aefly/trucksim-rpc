@@ -1,0 +1,25 @@
+CompileFlags:
+    Add:
+        - -x
+        - c++
+        - -std=c++23
+        - --target=x86_64-w64-mingw32
+        - -include
+        - ./src/sdk/discord/compat/preinclude.h
+        - -I./src/sdk/scs/include
+        - -I./src/sdk/discord/cpp
+        - -I./src/sdk/discord/compat
+        - -I./src/telemetry
+        - -I./src/discord
+        - -I./src/presence
+        - -I./src/config
+        - -I./src/log
+        - -I./src/core
+        - -DDISCORD_APP_ID=0
+        - -DWIN32
+        - -D_WIN32
+        - -D_WIN64
+
+Diagnostics:
+    Suppress:
+        - builtin_definition
