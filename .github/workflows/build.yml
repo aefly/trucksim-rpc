@@ -4,8 +4,26 @@ on:
     push:
         branches: ["*"]
         tags: ["v*"]
+        paths-ignore:
+            - "*.md"
+            - ".img/**"
+            - ".clangd"
+            - ".env*"
+            - ".gitignore"
+            - ".zed/**"
+            - "LICENSE"
+            - "gen_compile_commands.sh"
     pull_request:
         branches: ["*"]
+        paths-ignore:
+            - "*.md"
+            - ".img/**"
+            - ".clangd"
+            - ".env*"
+            - ".gitignore"
+            - ".zed/**"
+            - "LICENSE"
+            - "gen_compile_commands.sh"
     workflow_dispatch:
 
 permissions:
